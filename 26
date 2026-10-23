@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پیام‌رسان پیشرفته من</title>
+    <!-- کتابخانه EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("NEIsWwH-peWPd1X1t");
+        })();
+    </script>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: Tahoma, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: #1e293b;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+        }
+        #loginScreen {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            overflow-y: auto;
+        }
+        #loginScreen input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 16px 0;
+            border-radius: 8px;
+            border: 1px solid #475569;
+            background: #0f172a;
+            color: #fff;
+            font-size: 14px;
+            direction: ltr;
+            text-align: center;
+        }
+        .step-section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #mainScreen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+        .header {
+            background: #334155;
+            padding: 16px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #475569;
+        }
+        .menu-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            overflow-y: auto;
+        }
+        .menu-btn {
+            background: #334155;
+            padding: 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .menu-btn:hover {
+            background: #475569;
+        }
+        .search-box {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #475569;
+            background: #0f172a;
+            color: #fff;
+            direction: ltr;
+        }
+        #chatScreen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .message {
+            background: #2563eb;
+            padding: 10px 14px;
+            border-radius: 10px;
+            max-width: 75%;
+            word-break: break-word;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .message.incoming {
+            background: #475569;
+            align-self: flex-start;
+        }
+        .message.outgoing {
+            background: #2563eb;
+            align-self: flex-end;
+        }
+        .message-time {
+            font-size: 10px;
+            color: #cbd5e1;
+            align-self: flex-end;
+        }
+        .chat-input-box {
+            padding: 12px;
+            background: #334155;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .chat-input-box input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            background: #0f172a;
+            color: #fff;
+        }
+        .btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background: #059669;
+        }
+        .danger-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+        .danger-btn:hover {
+            background: #dc2626;
+        }
+        .back-btn {
+            background: #64748b;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            border: none;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 1. صفحه ثبت‌نام / ورود -->
+        <div id="loginScreen">
+            <h2>💬 پیام‌رسان پیشرفته</h2>
+            
+            <div id="step1" class="step-section">
+                <p style="color: #94a3b8; font-size: 13px; text-align: right; width: 100%;">آیدی انگلیسی:</p>
+                <input type="text" id="myIdInput" placeholder="e.g. amin_dev">
+                
+                <p style="color: #94a3b8; font-size: 13px; text-align: right; width: 100%;">ایمیل شما:</p>
+                <input type="email" id="myEmailInput" placeholder="e.g. example@gmail.com">
+                
+                <button class="btn" style="width: 100%; margin-top: 10px;" onclick="sendVerificationCode()">ارسال کد تایید به ایمیل</button>
+                
+                <!-- دکمه ورود تستی سریع برای دور زدن ایمیل -->
+                <button class="btn" style="width: 100%; margin-top: 10px; background: #3b82f6;" onclick="bypassLogin()">⚡ ورود سریع تستی (بدون ایمیل)</button>
+            </div>
+
+            <div id="step2" class="step-section" style="display: none;">
+                <p style="color: #10b981; font-size: 13px; margin-bottom: 10px;">کد تایید به ایمیل شما ارسال شد. آن را وارد کنید:</p>
+                <input type="text" id="verificationCodeInput" placeholder="کد ۴ رقمی..." maxlength="4" style="letter-spacing: 5px; font-weight: bold;">
+                <button class="btn" style="width: 100%;" onclick="verifyCode()">تایید و ورود</button>
+                <button class="back-btn" style="width: 100%; margin-top: 10px;" onclick="backToStep1()">ویرایش مشخصات</button>
+            </div>
+        </div>
+
+        <!-- 2. صفحه اصلی / منو -->
+        <div id="mainScreen">
+            <div class="header">
+                <span id="welcomeUser">حساب کاربری</span>
+                <span style="font-size: 12px; color: #10b981;">● آنلاین</span>
+            </div>
+            <div class="menu-body">
+                <div class="menu-btn" onclick="openSavedMessages()">⭐ پیام‌های ذخیره شده (Saved Messages)</div>
+                
+                <div style="margin-top: 20px;">
+                    <p style="font-size: 13px; color: #94a3b8; margin-bottom: 8px;">جستجوی مخاطب با آیدی:</p>
+                    <div class="search-box">
+                        <input type="text" id="targetIdInput" placeholder="آیدی مخاطب...">
+                        <button class="btn" onclick="startChatWithUser()">شروع گفتگو</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. صفحه چت -->
+        <div id="chatScreen">
+            <div class="header">
+                <div style="display: flex; gap: 6px; align-items: center;">
+                    <button class="back-btn" onclick="goBackToMenu()">⬅️</button>
+                    <button class="danger-btn" onclick="clearChat()">🗑️ پاک کردن</button>
+                </div>
+                <span id="chatTitle" style="font-size: 13px;">اتاق گفتگو</span>
+            </div>
+            <div class="chat-messages" id="messageContainer"></div>
+            
+            <div class="chat-input-box">
+                <label style="cursor: pointer; font-size: 18px;" title="ارسال عکس/فایل">
+                    📎 <input type="file" id="fileInput" style="display: none;" onchange="sendFile()">
+                </label>
+                <input type="text" id="messageInput" placeholder="پیام خود را بنویسید..." onkeypress="checkEnter(event)">
+                <button class="btn" onclick="sendMessage()">ارسال</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let myId = "";
+        let myEmail = "";
+        let generatedCode = "";
+        let currentChatId = "";
+
+        function bypassLogin() {
+            const inputId = document.getElementById("myIdInput").value.trim();
+            if (!inputId) {
+                myId = "user_" + Math.floor(Math.random() * 1000);
+            } else {
+                myId = inputId;
+            }
+            myEmail = "test@example.com";
+            document.getElementById("loginScreen").style.display = "none";
+            document.getElementById("mainScreen").style.display = "flex";
+            document.getElementById("welcomeUser").textContent = `@${myId}`;
+        }
+
+        function sendVerificationCode() {
+            const inputId = document.getElementById("myIdInput").value.trim();
+            const inputEmail = document.getElementById("myEmailInput").value.trim();
+            
+            const idRegex = /^[a-zA-Z0-9_]+$/;
+            if (!inputId || !idRegex.test(inputId)) {
+                alert("لطفاً یک آیدی معتبر انگلیسی وارد کنید.");
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!inputEmail || !emailRegex.test(inputEmail)) {
+                alert("لطفاً یک ایمیل معتبر وارد کنید.");
+                return;
+            }
+
+            myId = inputId;
+            myEmail = inputEmail;
+            generatedCode = Math.floor(1000 + Math.random() * 9000).toString();
+
+            const templateParams = {
+                to_email: myEmail,
+                pass_code: generatedCode,
+                to_name: myId
+            };
+
+            emailjs.send("service_oyjd7rg", "template_9zjj303", templateParams)
+                .then(function() {
+                    alert("کد تایید با موفقیت به ایمیل شما ارسال شد!");
+                    document.getElementById("step1").style.display = "none";
+                    document.getElementById("step2").style.display = "flex";
+                }, function(error) {
+                    alert("خطا در ارسال ایمیل (میتوانید از دکمه ورود سریع استفاده کنید):\n" + JSON.stringify(error));
+                });
+        }
+
+        function verifyCode() {
+            const enteredCode = document.getElementById("verificationCodeInput").value.trim();
+            if (enteredCode !== generatedCode) {
+                alert("کد تایید اشتباه است.");
+                return;
+            }
+            document.getElementById("loginScreen").style.display = "none";
+            document.getElementById("mainScreen").style.display = "flex";
+            document.getElementById("welcomeUser").textContent = `@${myId}`;
+        }
+
+        function backToStep1() {
+            document.getElementById("step2").style.display = "none";
+            document.getElementById("step1").style.display = "flex";
+        }
+
+        function checkEnter(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+
+        function openSavedMessages() {
+            currentChatId = "saved_" + myId;
+            document.getElementById("mainScreen").style.display = "none";
+            document.getElementById("chatScreen").style.display = "flex";
+            document.getElementById("chatTitle").textContent = "⭐ پیام‌های ذخیره شده";
+            loadMessages();
+        }
+
+        function startChatWithUser() {
+            const targetId = document.getElementById("targetIdInput").value.trim();
+            if (!targetId) {
+                alert("لطفاً آیدی مخاطب را وارد کنید.");
+                return;
+            }
+            if (targetId === myId) {
+                alert("نمی‌توانید به خودتان پیام دهید!");
+                return;
+            }
+            currentChatId = "chat_" + [myId, targetId].sort().join("_");
+            document.getElementById("mainScreen").style.display = "none";
+            document.getElementById("chatScreen").style.display = "flex";
+            document.getElementById("chatTitle").textContent = `👤 گفتگو با @${targetId}`;
+            loadMessages();
+        }
+
+        function goBackToMenu() {
+            document.getElementById("chatScreen").style.display = "none";
+            document.getElementById("mainScreen").style.display = "flex";
+            document.getElementById("targetIdInput").value = "";
+        }
+
+        function clearChat() {
+            if (confirm("آیا مطمئن هستید که می‌خواهید تمام پیام‌های این صفحه را پاک کنید؟")) {
+                localStorage.removeItem(currentChatId);
+                loadMessages();
+            }
+        }
+
+        function sendMessage() {
+            const textInput = document.getElementById("messageInput");
+            const text = textInput.value.trim();
+            if (!text) return;
+
+            const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            saveAndDisplayMessage(text, "text", "outgoing", timeNow);
+            textInput.value = "";
+        }
+
+        function sendFile() {
+            const fileInput = document.getElementById("fileInput");
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                if (file.type.startsWith("image/")) {
+                    saveAndDisplayMessage(e.target.result, "image", "outgoing", timeNow);
+                } else {
+                    saveAndDisplayMessage(`📁 فایل: ${file.name}`, "text", "outgoing", timeNow);
+                }
+            };
+            reader.readAsDataURL(file);
+            fileInput.value = "";
+        }
+
+        function saveAndDisplayMessage(content, type, direction, time) {
+            appendMessageUI(content, type, direction, time);
+
+            let messages = JSON.parse(localStorage.getItem(currentChatId) || "[]");
+            messages.push({ content, type, direction, time });
+            localStorage.setItem(currentChatId, JSON.stringify(messages));
+        }
+
+        function appendMessageUI(content, type, direction, time) {
+            const container = document.getElementById("messageContainer");
+            const msgDiv = document.createElement("div");
+            msgDiv.className = `message ${direction}`;
+
+            if (type === "image") {
+                const img = document.createElement("img");
+                img.src = content;
+                img.style.cssText = "width:100%; border-radius:8px;";
+                msgDiv.appendChild(img);
+            } else {
+                const textSpan = document.createElement("span");
+                textSpan.textContent = content;
+                msgDiv.appendChild(textSpan);
+            }
+
+            const timeSpan = document.createElement("span");
+            timeSpan.className = "message-time";
+            timeSpan.textContent = time || "";
+            msgDiv.appendChild(timeSpan);
+
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function loadMessages() {
+            const container = document.getElementById("messageContainer");
+            container.replaceChildren();
+
+            let messages = JSON.parse(localStorage.getItem(currentChatId) || "[]");
+            messages.forEach(msg => {
+                appendMessageUI(msg.content, msg.type, msg.direction, msg.time);
+            });
+        }
+    </script>
+</body>
+</html>
